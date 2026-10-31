@@ -1,0 +1,21 @@
+<form [formGroup]="form" (ngSubmit)="submit()">
+  <fieldset>
+    <legend>Who is better?</legend>
+    @for (option of verdictOptions; track option.value) {
+      <label>
+        <input type="radio" formControlName="verdict" [value]="option.value" />
+        {{ option.label }}
+      </label>
+    }
+  </fieldset>
+
+  <label>
+    Confidence (50–100%)
+    <input type="number" formControlName="confidence" min="50" max="100" />
+  </label>
+  @if (form.controls.confidence.touched && form.controls.confidence.invalid) {
+    <p class="error">Enter a confidence between 50 and 100.</p>
+  }
+
+  <button type="submit" [disabled]="form.invalid">Submit evaluation</button>
+</form>
