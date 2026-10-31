@@ -9,6 +9,11 @@
   } @else if (currentPosition(); as position) {
     <p>Position {{ position.id }}</p>
     <app-board-view [fen]="position.fen" />
-    <app-verdict-form [positionId]="position.id" (answered)="onAnswered($event)" />
+
+    @if (currentAnswered()) {
+      <p class="confirmation">Your evaluation has been recorded.</p>
+    } @else {
+      <app-verdict-form [positionId]="position.id" (answered)="onAnswered($event)" />
+    }
   }
 </main>

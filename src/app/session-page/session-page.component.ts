@@ -3,6 +3,7 @@ import { BoardViewComponent } from '../board-view/board-view.component';
 import { Answer } from '../models/answer.model';
 import { ChessPosition } from '../models/chess-position.model';
 import { PositionService } from '../services/position.service';
+import { SessionService } from '../services/session.service';
 import { VerdictFormComponent } from '../verdict-form/verdict-form.component';
 
 @Component({
@@ -13,16 +14,21 @@ import { VerdictFormComponent } from '../verdict-form/verdict-form.component';
 })
 export class SessionPageComponent {
   protected readonly positionService = inject(PositionService);
+  private readonly sessionService = inject(SessionService);
+
   protected readonly currentIndex = signal(0);
   protected readonly currentPosition = computed<ChessPosition | undefined>(
     () => this.positionService.positions()[this.currentIndex()],
   );
-
-  protected onAnswered(answer: Answer): void {
-    console.log('TEMP answer received', answer);
-  }
+  protected readonly currentAnswered = computed(() =>
+    this.sessionService.answers().some((a) => a.positionId === this.currentPosition()?.id),
+  );
 
   constructor() {
     this.positionService.load();
+  }
+
+  protected onAnswered(answer: Answer): void {
+    this.sessionService.submitAnswer(answer);
   }
 }
