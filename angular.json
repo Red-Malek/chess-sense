@@ -2,7 +2,8 @@
   "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
   "version": 1,
   "cli": {
-    "packageManager": "npm"
+    "packageManager": "npm",
+    "analytics": "3347b626-6644-4987-89a3-eeece8c592db"
   },
   "newProjectRoot": "projects",
   "projects": {
@@ -19,14 +20,21 @@
             "browser": "src/main.ts",
             "tsConfig": "tsconfig.app.json",
             "assets": [
-              {
-                "glob": "**/*",
-                "input": "public"
-              }
-            ],
+             {
+              "glob": "**/*",
+             "input": "public"
+           },
+           {
+             "glob": "pieces/standard.svg",
+             "input": "node_modules/cm-chessboard/assets",
+              "output": "/assets/cm-chessboard/"
+             }
+             ],
+             
             "styles": [
-              "src/styles.css"
-            ]
+                "node_modules/cm-chessboard/assets/chessboard.css",
+                 "src/styles.css"
+                       ]
           },
           "configurations": {
             "production": {
