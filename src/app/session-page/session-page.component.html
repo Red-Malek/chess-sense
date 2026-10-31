@@ -1,0 +1,14 @@
+<main>
+  <h1>ChessSense</h1>
+  <p>Trust your intuition. Test your judgment.</p>
+
+  @if (positionService.loading()) {
+    <p>Loading positions…</p>
+  } @else if (positionService.error()) {
+    <p>{{ positionService.error() }}</p>
+  } @else if (currentPosition(); as position) {
+    <p>Position {{ position.id }}</p>
+    <app-board-view [fen]="position.fen" />
+    <app-verdict-form [positionId]="position.id" (answered)="onAnswered($event)" />
+  }
+</main>
