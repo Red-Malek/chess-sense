@@ -1,0 +1,1 @@
+export type Verdict = 'WHITE_BETTER' | 'EQUAL' | 'BLACK_BETTER';
