@@ -11,7 +11,7 @@ describe('VerdictFormComponent', () => {
   // Radios appear in the order: White better, Equal, Black better.
   const radio = (index: number) =>
     el.querySelectorAll<HTMLInputElement>('input[type="radio"]')[index];
-  const confidence = () => el.querySelector('input[type="number"]') as HTMLInputElement;
+  const confidence = () => el.querySelector('input[type="range"]') as HTMLInputElement;
 
   async function setConfidence(value: string) {
     confidence().value = value;
@@ -39,12 +39,14 @@ describe('VerdictFormComponent', () => {
     expect(button().disabled).toBe(true);
   });
 
-  it('rejects a confidence below 50 or above 100', async () => {
-    radio(1).click();
-    for (const bad of ['49', '101']) {
-      await setConfidence(bad);
-      expect(button().disabled).toBe(true);
-    }
+  it('limits the confidence slider to 50–100', () => {
+    expect(confidence().min).toBe('50');
+    expect(confidence().max).toBe('100');
+  });
+
+  it('disables submit when only a confidence is chosen', async () => {
+    await setConfidence('80');
+    expect(button().disabled).toBe(true);
   });
 
   it('emits a typed answer with the position id when valid', async () => {

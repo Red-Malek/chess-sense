@@ -1,4 +1,5 @@
-import { Component, input, output } from '@angular/core';
+import { Component, computed, input, output } from '@angular/core';
+import { toSignal } from '@angular/core/rxjs-interop';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Answer } from '../models/answer.model';
 import { Verdict } from '../models/verdict.model';
@@ -27,6 +28,25 @@ export class VerdictFormComponent {
       Validators.max(100),
     ]),
   });
+
+  protected readonly confidence = toSignal(this.form.controls.confidence.valueChanges, {
+    initialValue: this.form.controls.confidence.value,
+  });
+
+  /** Native range inputs rest at the midpoint of 50–100 until the user moves them. */
+  private readonly restingConfidence = 75;
+
+  protected readonly sliderPercent = computed(
+    () => ((this.confidence() ?? this.restingConfidence) - 50) * 2,
+  );
+
+  protected commitConfidence(event: Event): void {
+    const control = this.form.controls.confidence;
+    if (control.value === null) {
+      control.setValue(Number((event.target as HTMLInputElement).value));
+    }
+    control.markAsTouched();
+  }
 
   protected submit(): void {
     const { verdict, confidence } = this.form.getRawValue();
