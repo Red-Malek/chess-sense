@@ -1,4 +1,8 @@
 :host {
   display: block;
-  max-width: 400px;
+  width: min(100%, 720px, max(320px, 100svh - 17rem));
+  margin-inline: auto;
+  border-radius: 6px;
+  overflow: hidden;
+  box-shadow: 0 12px 32px rgb(0 0 0 / 45%);
 }

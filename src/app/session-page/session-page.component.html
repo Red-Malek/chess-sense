@@ -1,13 +1,15 @@
-<main>
-  <h1>ChessSense</h1>
-  <p>Trust your intuition. Test your judgment.</p>
+<main class="page">
+  <header class="header">
+    <h1 class="brand">Chess<span>Sense</span></h1>
+    <p class="tagline">Trust your intuition. Test your judgment.</p>
+  </header>
 
   @if (positionService.loading()) {
-    <p>Loading positions…</p>
+    <p class="status">Loading positions…</p>
   } @else if (positionService.error()) {
-    <p>{{ positionService.error() }}</p>
+    <p class="status status-error">{{ positionService.error() }}</p>
   } @else if (currentPosition(); as position) {
-    <p>Position {{ position.id }}</p>
+    <p class="position-label">Position {{ position.id }}</p>
     <app-board-view [fen]="position.fen" />
 
     @if (currentAnswered()) {
