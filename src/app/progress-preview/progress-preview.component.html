@@ -1,0 +1,35 @@
+<section class="card" aria-labelledby="progress-title">
+  <header class="head">
+    <div>
+      <h2 id="progress-title">Your Progress</h2>
+      <p class="sub">Keep sharpening your judgment</p>
+    </div>
+    <a class="all" routerLink="/progress">View all →</a>
+  </header>
+
+  @if (hasData()) {
+    <dl class="stats">
+      <div>
+        <dt>Accuracy</dt>
+        <dd>—</dd>
+      </div>
+      <div>
+        <dt>Avg. confidence</dt>
+        <dd>{{ averageConfidence() }}%</dd>
+      </div>
+      <div>
+        <dt>Calibration gap</dt>
+        <dd>—</dd>
+      </div>
+    </dl>
+    <p class="note">
+      {{ answered() }} evaluation{{ answered() === 1 ? '' : 's' }} this session. Accuracy and
+      calibration appear once engine verdicts are available.
+    </p>
+  } @else {
+    <div class="empty">
+      <p>Solve positions to see your stats</p>
+      <a class="cta" routerLink="/setup">Start Training</a>
+    </div>
+  }
+</section>

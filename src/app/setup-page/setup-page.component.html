@@ -1,0 +1,70 @@
+<main class="page">
+  <header class="hero reveal" style="--i: 0">
+    <h1 class="headline">Set up your session</h1>
+    <p class="purpose">Defaults are ready. Adjust anything, then start.</p>
+  </header>
+
+  <form class="steps" (submit)="$event.preventDefault(); start()">
+    <section class="step reveal" style="--i: 1" aria-labelledby="step-categories">
+      <h2 class="step-title" id="step-categories">
+        <span class="badge">1</span>Categories<span class="rule"></span>
+      </h2>
+      <app-category-picker [selected]="categories()" (toggled)="toggleCategory($event)" />
+      <p class="helper">Pick one or more. At least one stays selected.</p>
+    </section>
+
+    <div class="pair">
+      <section class="step reveal" style="--i: 2" aria-labelledby="step-difficulty">
+        <h2 class="step-title" id="step-difficulty">
+          <span class="badge">2</span>Difficulty<span class="rule"></span>
+        </h2>
+        <app-segmented-group
+          name="difficulty"
+          label="Difficulty"
+          [options]="difficultyOptions"
+          [value]="difficulty()"
+          (selectionChange)="setDifficulty($event)"
+        />
+      </section>
+
+      <section class="step reveal" style="--i: 3" aria-labelledby="step-phase">
+        <h2 class="step-title" id="step-phase">
+          <span class="badge">3</span>Game phase<span class="rule"></span>
+        </h2>
+        <app-segmented-group
+          name="phase"
+          label="Game phase"
+          [options]="phaseOptions"
+          [value]="phase()"
+          (selectionChange)="setPhase($event)"
+        />
+      </section>
+    </div>
+
+    <section class="step reveal" style="--i: 4" aria-labelledby="step-length">
+      <h2 class="step-title" id="step-length">
+        <span class="badge">4</span>Length<span class="rule"></span>
+      </h2>
+      <app-segmented-group
+        name="length"
+        label="Number of positions"
+        [options]="lengthOptions()"
+        [value]="selectedLength()"
+        (selectionChange)="setLength($event)"
+      />
+      @if (lengthNote(); as note) {
+        <p class="helper">{{ note }}</p>
+      }
+    </section>
+
+    <div class="bar reveal" style="--i: 5">
+      <div class="bar-info" aria-live="polite">
+        <p class="summary">{{ summary() }}</p>
+        <p class="matches" [class.warn]="!canStart()">
+          {{ disabledReason() ?? matchCount() + ' matching positions available' }}
+        </p>
+      </div>
+      <button type="submit" class="start" [disabled]="!canStart()">Start training</button>
+    </div>
+  </form>
+</main>
