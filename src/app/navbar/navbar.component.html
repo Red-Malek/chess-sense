@@ -1,0 +1,104 @@
+<ng-template #navItems>
+  @for (item of items; track item.path) {
+    <a
+      class="link"
+      [routerLink]="item.path"
+      [class.active]="activePath() === item.path"
+      [attr.aria-current]="activePath() === item.path ? 'page' : null"
+      (click)="closeAll()"
+    >
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        @switch (item.icon) {
+          @case ('train') {
+            <path d="M8 5v14l11-7z" />
+          }
+          @case ('progress') {
+            <path d="M5 20v-6M12 20V6M19 20v-9" />
+          }
+          @case ('guide') {
+            <path
+              d="M3 5h7a2 2 0 0 1 2 2v13a2 2 0 0 0-2-2H3zM21 5h-7a2 2 0 0 0-2 2v13a2 2 0 0 1 2-2h7z"
+            />
+          }
+        }
+      </svg>
+      {{ item.label }}
+    </a>
+  }
+</ng-template>
+
+<header class="bar">
+  <div class="inner">
+    <a class="logo" routerLink="/" aria-label="ChessSense home" (click)="closeAll()">
+      <app-emblem />
+      <span class="word">Chess<span>Sense</span></span>
+    </a>
+
+    <nav class="links" aria-label="Main">
+      <ng-container [ngTemplateOutlet]="navItems" />
+    </nav>
+
+    <div class="actions">
+      @if (loggedIn()) {
+        <a class="btn primary" routerLink="/setup">Start Training</a>
+        <div class="user">
+          <button
+            type="button"
+            class="icon-btn"
+            aria-label="Account menu"
+            aria-haspopup="menu"
+            [attr.aria-expanded]="userMenuOpen()"
+            (click)="toggleUserMenu()"
+          >
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <circle cx="12" cy="8" r="4" />
+              <path d="M4 21a8 8 0 0 1 16 0" />
+            </svg>
+          </button>
+          @if (userMenuOpen()) {
+            <div class="menu" role="menu">
+              <a role="menuitem" routerLink="/profile" (click)="closeAll()">Profile</a>
+              <button type="button" role="menuitem" (click)="logout()">Log out</button>
+            </div>
+          }
+        </div>
+      } @else {
+        <a class="btn primary" routerLink="/sign-in">Sign In</a>
+        <a class="btn secondary" routerLink="/sign-up">Sign Up</a>
+      }
+    </div>
+
+    <button
+      type="button"
+      class="icon-btn burger"
+      aria-controls="mobile-drawer"
+      [attr.aria-expanded]="menuOpen()"
+      [attr.aria-label]="menuOpen() ? 'Close menu' : 'Open menu'"
+      (click)="toggleMenu()"
+    >
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        @if (menuOpen()) {
+          <path d="M6 6l12 12M18 6 6 18" />
+        } @else {
+          <path d="M4 7h16M4 12h16M4 17h16" />
+        }
+      </svg>
+    </button>
+  </div>
+
+  @if (menuOpen()) {
+    <nav class="drawer" id="mobile-drawer" aria-label="Mobile">
+      <ng-container [ngTemplateOutlet]="navItems" />
+      <div class="drawer-actions">
+        @if (loggedIn()) {
+          <a class="btn primary" routerLink="/setup" (click)="closeAll()">Start Training</a>
+          <a class="btn secondary" routerLink="/profile" (click)="closeAll()">Profile</a>
+          <button type="button" class="btn secondary" (click)="logout()">Log out</button>
+        } @else {
+          <a class="btn primary" routerLink="/sign-in" (click)="closeAll()">Sign In</a>
+          <a class="btn secondary" routerLink="/sign-up" (click)="closeAll()">Sign Up</a>
+        }
+      </div>
+    </nav>
+  }
+</header>
