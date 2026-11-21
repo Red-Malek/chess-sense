@@ -1,0 +1,40 @@
+<div class="cards" role="group" aria-label="Categories">
+  @for (card of cards; track card.value) {
+    <label class="card" [class.selected]="isSelected(card.value)">
+      <input
+        type="checkbox"
+        [checked]="isSelected(card.value)"
+        [attr.aria-describedby]="'cat-' + card.value"
+        (change)="onChange($event, card.value)"
+      />
+      <svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
+        @switch (card.value) {
+          @case ('TACTICAL') {
+            <path d="M13 3 5 13.5h6L10 21l8-10.5h-6z" />
+          }
+          @case ('POSITIONAL') {
+            <rect x="4" y="4" width="7" height="7" />
+            <rect x="13" y="13" width="7" height="7" />
+            <rect x="13" y="4" width="7" height="7" opacity="0.4" />
+            <rect x="4" y="13" width="7" height="7" opacity="0.4" />
+          }
+          @case ('DEFENSIVE') {
+            <path d="M12 3 5 6v5.5c0 4.2 2.8 7.4 7 9.5 4.2-2.1 7-5.3 7-9.5V6z" />
+          }
+          @case ('TECHNICAL') {
+            <circle cx="12" cy="12" r="7.5" />
+            <circle cx="12" cy="12" r="2.5" />
+            <path d="M12 2v3M12 19v3M2 12h3M19 12h3" />
+          }
+        }
+      </svg>
+      <span class="title">{{ card.label }}</span>
+      <span class="desc" [id]="'cat-' + card.value">{{ card.description }}</span>
+      @if (isSelected(card.value)) {
+        <svg class="check" viewBox="0 0 16 16" aria-hidden="true">
+          <path d="m3.5 8.5 3 3 6-7" />
+        </svg>
+      }
+    </label>
+  }
+</div>
